@@ -1,4 +1,5 @@
 import java.util.Scanner;
+import java.util.ArrayList;
 
 public class HandleOrders {
 
@@ -11,6 +12,7 @@ public class HandleOrders {
     private double totalOrderPrice = 0.0;
     private int numberOfPizzasOrdered = 0;
     StringBuilder pizzaOrderSummary = new StringBuilder();
+    private ArrayList<CustomPizza> customPizzas = new ArrayList<>();
 
     Scanner input = new Scanner(System.in);
 
@@ -78,7 +80,8 @@ public class HandleOrders {
                 }
             } else if (choice == 6){
                 double customPizzaPrice = 0;
-                
+                StringBuilder customPizzaToppings = new StringBuilder();
+
                 System.out.println("For your custom pizza, here are the toppings:");
                 int k = 1;
                 for(PizzaToppings topping : PizzaToppings.values()){
@@ -97,13 +100,13 @@ public class HandleOrders {
                     if(toppingChoice == 0){
                         break;
                     }
-                    customPizza.append(PizzaToppings.values()[toppingChoice-1].getTopping() + ", ");
+                    customPizzaToppings.append(PizzaToppings.values()[toppingChoice-1].getTopping() + ", ");
                     customPizzaPrice += PizzaToppings.values()[toppingChoice-1].getToppingPrice();
                     l++;
                 }while(l!=10 || l!=0);
                 
                 customPizzaPrice += PIZZA_BASE_PRICE;
-                
+                customPizzas.add(new CustomPizza(customPizzaToppings.toString(), customPizzaPrice));
                 customPizza.append(": €" + customPizzaPrice);
 
                 pizzasOrdered[j] = customPizza.toString();
@@ -182,6 +185,13 @@ public class HandleOrders {
 
         pizzaOrderSummary.append("ORDER TOTAL: €" + totalOrderPrice + "\n");
 
+    }
+
+    public void displayCustomPizzas() {
+        System.out.println("Custom Pizzas Ordered:");
+        for (CustomPizza customPizza : customPizzas) {
+            System.out.println(customPizza);
+        }
     }
 
     @Override
